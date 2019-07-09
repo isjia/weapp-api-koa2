@@ -4,7 +4,7 @@ module.exports = {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Notes', link: '/notes/' },
-      { text: 'API文档', link: 'http://www.7yue.pro/#/home' },
+      { text: '课程服务', link: 'http://www.7yue.pro' },
     ],
     sidebar: [
       {
