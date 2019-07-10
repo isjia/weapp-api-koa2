@@ -12,6 +12,7 @@ module.exports = {
         collapsable: false,
         children: [
           '/notes/ch01',
+          '/notes/ch02',
         ]
       }
     ]

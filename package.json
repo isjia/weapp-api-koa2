@@ -20,5 +20,8 @@
   "homepage": "https://github.com/isjia/weapp-api-koa2#readme",
   "devDependencies": {
     "vuepress": "^1.0.2"
+  },
+  "dependencies": {
+    "koa": "^2.7.0"
   }
 }
