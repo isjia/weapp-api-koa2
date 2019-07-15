@@ -13,6 +13,7 @@ module.exports = {
         children: [
           '/notes/ch01',
           '/notes/ch02',
+          '/notes/ch03'
         ]
       }
     ]
