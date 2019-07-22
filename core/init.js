@@ -11,13 +11,14 @@ class InitManager {
   static initLoadRouters() {
     // 使用绝对路径
     const apiDirectory = `${process.cwd()}/app/api`
-    const modules = requireDirectory(module, apiDirectory, {
+    requireDirectory(module, apiDirectory, {
       visit: whenLoadModule
     });
 
     function whenLoadModule(obj) {
       // 注册路由模块
       if (obj instanceof Router) {
+        // console.log(obj);
         InitManager.app.use(obj.routes());
       }
     }
