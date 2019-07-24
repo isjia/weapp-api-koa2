@@ -5,7 +5,8 @@ class InitManager {
   static initCore(app) {
     // 入口方法
     InitManager.app = app;
-    InitManager.initLoadRouters()
+    InitManager.initLoadRouters();
+    InitManager.loadConfig();
   }
 
   static initLoadRouters() {
@@ -22,6 +23,12 @@ class InitManager {
         InitManager.app.use(obj.routes());
       }
     }
+  }
+
+  static loadConfig(path = '') {
+    const configPath = path || process.cwd() + '/config/config.js';
+    const config = require(configPath);
+    global.config = config
   }
 }
 

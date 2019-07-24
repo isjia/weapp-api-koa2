@@ -4,14 +4,34 @@ const catchError = async (ctx, next) => {
   try {
     await next()
   } catch (error) {
-    console.log(error);
-    if (error instanceof HttpException) {
-      ctx.body.msg = error.msg;
-      ctx.body.errCode = error.errCode;
-      ctx.body.reqUrl = `${ctx.method}: ${ctx.path}`;
+    // 开发环境
+    // 生产环境
+    // 开发环境 不是HttpException
+    const isHttpException = error instanceof HttpException
+    const isDev = global.config.env === 'dev'
+
+    if (isDev && !isHttpException) {
+      throw error
+    }
+
+    if (isHttpException) {
+      // 处理已知异常
+      ctx.body = {
+        msg: error.msg,
+        errCode: error.errCode,
+        reqUrl: `${ctx.method}: ${ctx.path}`,
+      }
       ctx.status = error.status;
     }
-    // ctx.body = 'error msg';
+    else {
+      // 处理未知异常
+      ctx.body = {
+        msg: '出错啦！！！',
+        errCode: 999,
+        request: `${ctx.method}: ${ctx.path}`,
+      }
+      ctx.status = 500
+    }
   }
 }
 

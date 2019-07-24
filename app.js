@@ -5,6 +5,9 @@ const InitManager = require('./core/init');
 const catchError = require('./middlewares/exception');
 
 const app = new Koa(); // 应用程序对象
+
+require('./app/models/user');
+
 app.use(bodyParser());
 app.use(catchError);
 

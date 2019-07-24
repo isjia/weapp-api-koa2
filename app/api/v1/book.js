@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const router = new Router();
 const { HttpException, ParameterException } = require('../../../core/http-exception');
+const { PositiveIntegerValidator } = require('../../validators/validator');
 
 router.get('/v1/book/latest', (ctx, next) => {
   // do something
@@ -17,6 +18,7 @@ router.get('/v1/book/latest', (ctx, next) => {
 });
 
 router.post('/v1/:id/book/latest', (ctx, next) => {
+  const v = new PositiveIntegerValidator().validate(ctx);
   const path = ctx.params;
   const query = ctx.request.query;
   const header = ctx.request.header;
