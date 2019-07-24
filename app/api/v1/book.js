@@ -3,13 +3,13 @@ const router = new Router();
 const { HttpException, ParameterException } = require('../../../core/http-exception');
 const { PositiveIntegerValidator } = require('../../validators/validator');
 
-router.get('/v1/book/latest', (ctx, next) => {
+router.get('/v1/book/latest', async (ctx, next) => {
   // do something
   ctx.body = {
     classic: 'book/latest'
   }
   // const error = new HttpException('an error message', 1001, 500);
-  const error = new ParameterException('缺少参数', 10001);
+  const error = await new ParameterException('缺少参数', 10001);
   // error.errCode = 1001;
   // error.message = 'an error';
   // error.status = 500;
@@ -17,8 +17,8 @@ router.get('/v1/book/latest', (ctx, next) => {
   throw error;
 });
 
-router.post('/v1/:id/book/latest', (ctx, next) => {
-  const v = new PositiveIntegerValidator().validate(ctx);
+router.post('/v1/:id/book/latest', async (ctx, next) => {
+  const v = await new PositiveIntegerValidator().validate(ctx);
   const path = ctx.params;
   const query = ctx.request.query;
   const header = ctx.request.header;

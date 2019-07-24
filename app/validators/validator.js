@@ -1,7 +1,11 @@
 const {
   LinValidator,
   Rule
-} = require('../../core/lin-validator');
+} = require('../../core/lin-validator-v2');
+
+const {
+  User
+} = require('../models/user');
 
 class PositiveIntegerValidator extends LinValidator {
   constructor() {
@@ -44,13 +48,28 @@ class RegisterValidator extends LinValidator {
     ];
   }
 
-  // 规则校验
+  // 验证password 二次输入
   validatePassword(vals) {
     const pwd1 = vals.body.password1;
     const pwd2 = vals.body.password2;
 
     if (pwd1 !== pwd2) {
       throw new Error('两个密码必须相同');
+    }
+  }
+  
+  // 验证 email 唯一
+  async validateEmail(vals) {
+    const email = vals.body.email;
+
+    const user = await User.findOne({
+      where: {
+        email: email
+      }
+    })
+
+    if (user) {
+      throw Error('email 已存在');
     }
   }
 }
