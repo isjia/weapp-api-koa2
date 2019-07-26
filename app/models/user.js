@@ -30,6 +30,7 @@ class User extends Model {
     if (!correct) {
       throw new AuthFailedException('密码不正确');
     }
+    return user;
   }
 }
 

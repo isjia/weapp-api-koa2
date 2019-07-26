@@ -1,5 +1,8 @@
 const Router = require('koa-router');
 const { TokenValidator } = require('../../validators/validator');
+const {
+  generateToken,
+} = require('../../../core/util');
 
 const router = new Router({
   prefix: '/v1/token',
@@ -14,7 +17,10 @@ router.post('/', async (ctx) => {
   const v = await new TokenValidator().validate(ctx);
   switch (v.get('body.type')) {
     case LoginType.USER_EMAIL:
-      await emailLogin(v.get('body.account'), v.get('body.secret'));
+      const token = await emailLogin(v.get('body.account'), v.get('body.secret'));
+      ctx.body = {
+        token,
+      }
       break;
     case LoginType.USER_MINI_PROGRAM:
       break;
@@ -25,6 +31,8 @@ router.post('/', async (ctx) => {
 
 async function emailLogin(account, secret) {
   const user = await User.verifyEmailPassword(account, secret);
+  const token = generateToken(user.id, 2);
+  return token;
 }
 
 module.exports = router;
