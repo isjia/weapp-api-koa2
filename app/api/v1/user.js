@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 // const bcrypt = require('bcryptjs');
 
+const { success } = require('../../lib/helper'); 
+
 const router = new Router({
   prefix: '/v1/user',
 });
@@ -24,6 +26,7 @@ router.post('/register', async (ctx) => {
   }
 
   const r = await User.create(user);
+  success('账号创建成功', 0);
 })
 
 module.exports = router;
