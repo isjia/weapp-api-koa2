@@ -7,6 +7,7 @@ const router = new Router({
 
 router.get('/latest', new Auth().m, async (ctx, next) => {
   // do something
+  ctx.body = ctx.auth;
 });
 
 module.exports = router;
