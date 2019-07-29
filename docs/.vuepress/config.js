@@ -19,6 +19,7 @@ module.exports = {
           '/notes/ch06',
           '/notes/ch07',
           '/notes/ch08',
+          '/notes/ch09',
         ]
       }
     ]

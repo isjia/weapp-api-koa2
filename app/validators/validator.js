@@ -7,7 +7,7 @@ const {
   User
 } = require('../models/user');
 
-const { LoginType } = require('../lib/enum');
+const { LoginType, ArtType } = require('../lib/enum');
 
 class PositiveIntegerValidator extends LinValidator {
   constructor() {
@@ -119,9 +119,27 @@ class NotEmptyValidator extends LinValidator {
   }
 }
 
+// Like Validator
+class LikeValidator extends PositiveIntegerValidator {
+  constructor() {
+    super();
+    this.validateType = checkArtType;
+  }
+}
+
+function checkArtType(vals) {
+  if (!vals.body.type) {
+    throw new Error('type是必须参数');
+  }
+  if (!ArtType.isThisType(vals.body.type)) {
+    throw new Error('type参数不合法');
+  };
+}
+
 module.exports = {
   PositiveIntegerValidator,
   RegisterValidator,
   TokenValidator,
   NotEmptyValidator,
+  LikeValidator,
 }
