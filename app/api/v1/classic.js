@@ -1,5 +1,7 @@
 const Router = require('koa-router');
 const { Auth } = require('../../../middlewares/auth');
+const { Flow } = require('../../models/flow');
+const { Art } = require('../../models/art');
 
 const router = new Router({
   prefix: '/v1/classic',
@@ -7,7 +9,15 @@ const router = new Router({
 
 router.get('/latest', new Auth().m, async (ctx, next) => {
   // do something
-  ctx.body = ctx.auth;
+  const flow = await Flow.findOne({
+    order: [
+      ['index', 'DESC'],
+    ],
+  })
+  const art = await Art.getData(flow.art_id, flow.type);
+  art.setDataValue('index', flow.index);
+
+  ctx.body = art;
 });
 
 module.exports = router;
