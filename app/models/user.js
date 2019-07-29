@@ -32,6 +32,23 @@ class User extends Model {
     }
     return user;
   }
+
+  // 确认 openid 是否存在：
+  static async getUserByOpenid(openid) {
+    const user = await User.findOne({
+      where: {
+        openid
+      }
+    })
+    return user;
+  }
+
+  // 创建User
+  static async registByOpenid(openid) {
+    return await User.create({
+      openid
+    })
+  }
 }
 
 User.init({
