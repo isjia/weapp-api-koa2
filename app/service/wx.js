@@ -1,4 +1,13 @@
-const util = require('../../core/util');
+const util = require('util');
+const axios = require('axios');
+
+const { AuthFailedException } = require('../../core/http-exception');
+const { User } = require('../models/user');
+const {
+  generateToken,
+} = require('../../core/util');
+
+const { Auth } = require('../../middlewares/auth');
 
 class WXManager {
   static async codeToToken(code) {
@@ -15,10 +24,10 @@ class WXManager {
       throw new AuthFailedException('openid获取失败');
     }
 
-    if (result.data.errCode !== 0) {
+    if (result.data.errcode) {
       throw new AuthFailedException('openid获取失败：' + result.data.errmsg);
     }
-
+    
     let user = await User.getUserByOpenid(result.data.openid)
 
     if (!user) {
@@ -27,4 +36,8 @@ class WXManager {
 
     return generateToken(user.id, Auth.USER);
   }
+}
+
+module.exports = {
+  WXManager,
 }

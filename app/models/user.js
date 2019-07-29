@@ -44,7 +44,7 @@ class User extends Model {
   }
 
   // 创建User
-  static async registByOpenid(openid) {
+  static async registUserByOpenid(openid) {
     return await User.create({
       openid
     })
