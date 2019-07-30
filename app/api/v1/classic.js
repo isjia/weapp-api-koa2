@@ -5,7 +5,10 @@ const { Auth } = require('../../../middlewares/auth');
 const { Flow } = require('../../models/flow');
 const { Art } = require('../../models/art');
 const { Favor } = require('@models/favor');
-const { PositiveIntegerValidator } = require('@validators/validator');
+const {
+  PositiveIntegerValidator,
+  ArtValidator,
+} = require('@validators/validator');
 const { NotFoundException } = require('@core/http-exception');
 
 const router = new Router({
@@ -74,6 +77,25 @@ router.get('/:index/previous', new Auth().m, async (ctx, next) => {
   art.setDataValue('index', flow.index);
   art.setDataValue('like_status', favor);
   ctx.body = art;
+})
+
+// 获取指定的期刊的点赞状态
+router.get('/:type/:id/favor', new Auth().m, async (ctx, next) => {
+  const v = await new ArtValidator().validate(ctx);
+  const id = v.get('path.id');
+  const type = v.get('path.type');
+
+  const art = await Art.getData(id, type);
+  const favor = await Favor.userLikeIt(id, type, ctx.auth.uid);
+
+  if (!art) {
+    throw new NotFoundException('期刊不存在');
+  }
+
+  ctx.body = {
+    fav_num: art.fav_nums,
+    like_status: favor,
+  }
 })
 
 module.exports = router;

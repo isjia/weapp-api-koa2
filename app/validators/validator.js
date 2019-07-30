@@ -127,11 +127,31 @@ class LikeValidator extends PositiveIntegerValidator {
   }
 }
 
+// Classic Validator
+class ArtValidator extends LinValidator {
+  constructor() {
+    super();
+    this.id = [
+      new Rule('isInt', '需要的是正整数', {
+        min: 1
+      }),
+    ]
+    this.type = [
+      new Rule('isInt', '需要的是正整数', {
+        min: 1
+      }),
+    ]
+    this.validateType = checkArtType;
+  }
+}
+
 function checkArtType(vals) {
-  if (!vals.body.type) {
+  // const type = parseInt(vals.body.type || vals.path.type);
+  const type = vals.body.type || vals.path.type;
+  if (!type) {
     throw new Error('type是必须参数');
   }
-  if (!ArtType.isThisType(vals.body.type)) {
+  if (!ArtType.isThisType(type)) {
     throw new Error('type参数不合法');
   };
 }
@@ -142,4 +162,5 @@ module.exports = {
   TokenValidator,
   NotEmptyValidator,
   LikeValidator,
+  ArtValidator,
 }
