@@ -16,6 +16,12 @@ const sequelize = new Sequelize(dbName, user, password, {
     // 个性化配置
     timestamps: true, //createdAt, updatedAt
     paranoid: true, // 软删除
+    scopes: {
+      bh: {
+        attributes: {
+            exclude: ['createdAt', 'updatedAt', 'deletedAt']},
+      }
+    }
   }
 });
 
