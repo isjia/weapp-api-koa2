@@ -1,6 +1,8 @@
+require('module-alias/register');
+
 const {
   sequelize
-} = require('../../core/db');
+} = require('@core/db');
 const {
   Sequelize,
   Model
@@ -9,7 +11,7 @@ const {
 const {
   DislikeException,
   LikeException,
-} = require('../../core/http-exception');
+} = require('@core/http-exception');
 
 const { Art } = require('./art');
 
@@ -73,7 +75,23 @@ class Favor extends Model {
               transaction: t
             });
     })
-  } 
+  }
+
+  static async userLikeIt(art_id, type, uid) {
+    const favor = await Favor.findOne({
+      where: {
+        art_id,
+        type,
+        uid,
+      }
+    })
+    if (favor) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 }
 
 Favor.init({
