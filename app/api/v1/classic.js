@@ -98,4 +98,18 @@ router.get('/:type/:id/favor', new Auth().m, async (ctx, next) => {
   }
 })
 
+// 获取用户收藏的期刊
+router.get('/favor', new Auth().m, async (ctx, next) => {
+  ctx.body = await Favor.getMyClassicFavors(ctx.auth.uid);
+})
+
+// 获取指定的期刊
+router.get('/:type/:id', new Auth().m, async (ctx)=> {
+  const v = await new ArtValidator().validate(ctx);
+  const art = new Art(v.get('path.id'), v.get('path.type'));
+  const artDetails = await art.getDetail(ctx.auth.uid);
+  artDetails.art.setDataValue('like_status', artDetails.like_status);
+  ctx.body = artDetails.art;
+})
+
 module.exports = router;

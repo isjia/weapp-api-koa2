@@ -5,7 +5,8 @@ const {
 } = require('@core/db');
 const {
   Sequelize,
-  Model
+  Model,
+  Op,
 } = require('sequelize');
 
 const {
@@ -91,6 +92,21 @@ class Favor extends Model {
     else {
       return false;
     }
+  }
+
+  static async getMyClassicFavors(uid) {
+    const favors = await Favor.findAll({
+      where: {
+        uid,
+        type: {
+          [Op.not]: 400
+        }
+      }
+    });
+    if (!favors) {
+      throw new NotFoundException('没有找到收藏记录');
+    }
+    return await Art.getList(favors);
   }
 }
 
