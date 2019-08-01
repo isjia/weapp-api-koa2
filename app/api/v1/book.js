@@ -1,32 +1,28 @@
+require('module-alias/register');
 const Router = require('koa-router');
-const router = new Router();
+const { HotBook } = require('@models/hot-book');
+const { Book } = require('@models/book');
+
 const { HttpException, ParameterException } = require('../../../core/http-exception');
 const { PositiveIntegerValidator } = require('../../validators/validator');
 
-router.get('/v1/book/latest', async (ctx, next) => {
-  // do something
-  ctx.body = {
-    classic: 'book/latest'
-  }
-  // const error = new HttpException('an error message', 1001, 500);
-  const error = await new ParameterException('缺少参数', 10001);
-  // error.errCode = 1001;
-  // error.message = 'an error';
-  // error.status = 500;
-  // error.reqUrl = ctx.method + ': ' + ctx.path;
-  throw error;
+const router = new Router({
+  prefix: '/v1/book',
 });
 
-router.post('/v1/:id/book/latest', async (ctx, next) => {
-  const v = await new PositiveIntegerValidator().validate(ctx);
-  const path = ctx.params;
-  const query = ctx.request.query;
-  const header = ctx.request.header;
-  const body = ctx.request.body
+// 获取热门图书
+router.get('/hot-list', async (ctx, next) => {
+  const books = await HotBook.getAll();
   ctx.body = {
-    path: `/v1/${path.id}/book/latest`,
-    body: ctx.request.body,
+    books,
   }
 });
+
+// 获取图书详情
+router.get('/:id/detail', async ctx => {
+  const v = await new PositiveIntegerValidator().validate(ctx);
+  const book = new Book(v.get('path.id'));
+  ctx.body = await book.detail();
+})
 
 module.exports = router;

@@ -1,3 +1,4 @@
+require('module-alias/register');
 const {
   flatten
  } = require('lodash');
@@ -5,6 +6,7 @@ const {
 const { Op } = require('sequelize');
 
 const { Movie, Music, Sentence } = require('./classic');
+const { ParameterException } = require('@core/http-exception');
 
 class Art {
   constructor(art_id, type) {
@@ -53,7 +55,7 @@ class Art {
         art = await Sentence.scope(scope).findOne(finder);
         break;
       case 400:
-
+        throw new ParameterException('无法获取图书信息');
         break;
       default:
         break;
