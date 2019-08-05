@@ -145,6 +145,47 @@ class ArtValidator extends LinValidator {
   }
 }
 
+// Search validator
+class SearchValidator extends LinValidator {
+  constructor() {
+    super();
+    this.q = [
+      new Rule('isLength', '搜索关键词不能为空', {
+        min: 1,
+        max: 32,
+      }),
+    ]
+
+    this.start = [
+      new Rule('isInt', '参数不符合规范', {
+        min: 0,
+        max: 60000
+      }),
+      new Rule('isOptional', '', 0)
+    ]
+
+    this.count = [
+      new Rule('isInt', '参数不符合规范', {
+        min: 1,
+        max: 20
+      }),
+      new Rule('isOptional', '', 20)
+    ]
+  }
+}
+
+class AddShortCommentValidator extends PositiveIntegerValidator {
+  constructor() {
+    super()
+    this.content = [
+      new Rule('isLength', '必须在1到12个字符之间', {
+        min: 1,
+        max: 12
+      })
+    ]
+  }
+}
+
 function checkArtType(vals) {
   // const type = parseInt(vals.body.type || vals.path.type);
   const type = vals.body.type || vals.path.type;
@@ -163,4 +204,6 @@ module.exports = {
   NotEmptyValidator,
   LikeValidator,
   ArtValidator,
+  SearchValidator,
+  AddShortCommentValidator,
 }

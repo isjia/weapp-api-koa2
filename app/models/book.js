@@ -23,6 +23,13 @@ class Book extends Model {
     const detail = await axios.get(url);
     return detail.data;
   }
+
+  static async searchFromYuShu(q, start, count, summary = 1) {
+    const url = util.format(global.config.yushu.keywordUrl, encodeURI(q), count, start, summary);
+    const results = await axios.get(url);
+
+    return results.data;
+  }
 }
 
 Book.init({
@@ -32,7 +39,7 @@ Book.init({
   },
   fav_nums: {
     type: Sequelize.INTEGER,
-    default: 0,
+    defaultValue: 0,
   }
 }, {
   sequelize,
