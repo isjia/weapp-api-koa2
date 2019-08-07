@@ -29,6 +29,16 @@ class Comment extends Model {
       })
     }
   }
+
+  // 获取图书的所有短评 by bookId
+  static async getComments(bookId) {
+    const comments = await Comment.findAll({
+      where: {
+        book_id: bookId,
+      }
+    });
+    return comments;
+  }
 }
 
 Comment.init({
