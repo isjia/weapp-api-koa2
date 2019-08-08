@@ -1,4 +1,10 @@
-const Sequelize = require('sequelize');
+const { Sequelize, Model} = require('sequelize');
+const {
+  unset,
+  clone,
+  isArray,
+} = require('lodash');
+
 const {
   dbName,
   host,
@@ -6,6 +12,7 @@ const {
   user,
   password
 } = require('../config/config').database;
+
 const sequelize = new Sequelize(dbName, user, password, {
   dialect: 'mysql',
   host,
@@ -24,6 +31,31 @@ const sequelize = new Sequelize(dbName, user, password, {
     }
   }
 });
+
+Model.prototype.toJSON = function () {
+  let data = clone(this.dataValues);
+  unset(data, 'updatedAt');
+  unset(data, 'createdAt');
+  unset(data, 'deletedAt');
+
+  for (key in data) {
+    if (key === 'image') {
+      if (!data[key].startsWith('http')) {
+        data[key] = global.config.host + data[key];
+      }
+    }
+  }
+
+  if(isArray(this.exclude)) {
+    this.exclude.forEach(
+      (value) => {
+        unset(data, value)
+      }
+    )
+  }
+
+  return data;
+}
 
 sequelize.sync();
 

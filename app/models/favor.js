@@ -138,7 +138,7 @@ class Favor extends Model {
     })
     
     return {
-      fav_num: favorNums,
+      fav_nums: favorNums,
       like_status: myFavor ? 1 : 0,
     }
   }

@@ -12,14 +12,14 @@ const {
 } = require('@core/db');
 
 class Book extends Model {
-  constructor(id) {
-    super();
-    this.id = id;
-  }
+  // constructor(id) {
+  //   super();
+  //   this.id = id;
+  // }
 
-  async detail() {
+  async detail(id) {
     // 从外部服务获取图书详情数据
-    const url = util.format(global.config.yushu.detailUrl, this.id);
+    const url = util.format(global.config.yushu.detailUrl, id);
     const detail = await axios.get(url);
     return detail.data;
   }

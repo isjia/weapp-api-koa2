@@ -55,10 +55,21 @@ class Art {
         art = await Sentence.scope(scope).findOne(finder);
         break;
       case 400:
-        throw new ParameterException('无法获取图书信息');
+        const { Book } = require('./book'); 
+        art = await Book.scope(scope).findOne(finder);
+        if (!art) {
+          art = await Book.create({
+            id: art_id,
+          })
+        }
+        // throw new ParameterException('无法获取图书信息');
         break;
       default:
         break;
+    }
+    if (art && art.image) {
+      let imgUrl = art.dataValues.image;
+      art.dataValues.image = global.config.host + imgUrl;
     }
     return art;
   }

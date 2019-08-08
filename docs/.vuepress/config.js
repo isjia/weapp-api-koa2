@@ -22,6 +22,8 @@ module.exports = {
           '/notes/ch09',
           '/notes/ch10',
           '/notes/ch11',
+          '/notes/ch12',
+          '/notes/ch13'
         ]
       }
     ]

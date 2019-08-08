@@ -44,7 +44,7 @@ class HotBook extends Model {
         console.log('connt>>>>>>>> ', count)
       }
     })
-    book.setDataValue('count', count);
+    book.setDataValue('fav_nums', count);
     return book;
   }
 }

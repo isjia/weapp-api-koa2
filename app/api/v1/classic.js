@@ -93,7 +93,7 @@ router.get('/:type/:id/favor', new Auth().m, async (ctx, next) => {
   }
 
   ctx.body = {
-    fav_num: art.fav_nums,
+    fav_nums: art.fav_nums,
     like_status: favor,
   }
 })

@@ -22,18 +22,16 @@ const router = new Router({
 });
 
 // 获取热门图书
-router.get('/hot-list', async (ctx, next) => {
+router.get('/hot_list', async (ctx, next) => {
   const books = await HotBook.getAll();
-  ctx.body = {
-    books,
-  }
+  ctx.body = books
 });
 
 // 获取图书详情
 router.get('/:id/detail', async ctx => {
   const v = await new PositiveIntegerValidator().validate(ctx);
-  const book = new Book(v.get('path.id'));
-  ctx.body = await book.detail();
+  const book = new Book();
+  ctx.body = await book.detail(v.get('path.id'));
 })
 
 // 根据关键词搜索图书
@@ -76,7 +74,10 @@ router.get('/:book_id/short_comment', new Auth().m, async (ctx) => {
   });
   const comments = await Comment.getComments(v.get('path.book_id'));
 
-  ctx.body = comments;
+  ctx.body = {
+    comments: comments,
+    book_id: v.get('path.book_id'),
+  }
 })
 
 // 获取热门搜索词（fake）
